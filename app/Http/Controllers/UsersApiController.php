@@ -51,8 +51,11 @@ class UsersApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $id)
     {
+        $data = $id;
+
+        return $data;
     }
 
     /**
