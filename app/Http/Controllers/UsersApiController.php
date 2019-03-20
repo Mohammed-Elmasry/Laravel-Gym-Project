@@ -14,9 +14,7 @@ class UsersApiController extends Controller
      */
     public function index()
     {
-        $data = User::all();
-
-        return $data;
+        return User::all();
     }
 
     /**
@@ -39,9 +37,7 @@ class UsersApiController extends Controller
      */
     public function show(User $id)
     {
-        $data = $id;
-
-        return $data;
+        return $id;
     }
 
     /**
@@ -53,9 +49,7 @@ class UsersApiController extends Controller
      */
     public function edit(User $id)
     {
-        $data = $id;
-
-        return $data;
+        return $id;
     }
 
     /**
