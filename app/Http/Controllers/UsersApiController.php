@@ -27,7 +27,6 @@ class UsersApiController extends Controller
      */
     public function store(Request $request)
     {
-        
         $name = $request->input('name');
         $email = $request->input('email');
         $pw = $request->input('password');
@@ -35,18 +34,15 @@ class UsersApiController extends Controller
         $gender = $request->input('gender');
         $dob = $request->input('date_of_birth');
         $img = $request->input('profile_img');
-        
 
         DB::table('users')->insert(
             [
-                'name' =>$name,
+                'name' => $name,
                 'password' => $pw,
                 'email' => $email,
-                'gender'=>$gender,
-                'date_of_birth'=>$dob,
-                'profile_img'=>$img,
-                
-
+                'gender' => $gender,
+                'date_of_birth' => $dob,
+                'profile_img' => $img,
                 ]
         );
     }
@@ -58,10 +54,9 @@ class UsersApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(User $id)
+    public function show($id)
     {
-       $data = User::findOrFail($id);
-       
+        $data = User::findOrFail($id);
 
         return $data;
     }
