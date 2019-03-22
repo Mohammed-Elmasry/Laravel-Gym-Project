@@ -31,6 +31,7 @@ class UsersApiController extends Controller
         $email = $request->input('email');
         $pw = $request->input('password');
         //$pw = $request->input('conf_password');
+
         $gender = $request->input('gender');
         $dob = $request->input('date_of_birth');
         $img = $request->input('profile_img');
