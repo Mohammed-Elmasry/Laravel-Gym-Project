@@ -1,7 +1,8 @@
 <?php
 
 /*
-|--------------------------------------------------------------------------
+|----------------------------------------Route::get('/posts/create', 'PostsController@create')
+->name('posts.create');----------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
@@ -15,3 +16,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/coaches', 'CoachesController@index')
+->name('coaches.index');
+
+Route::get('/coaches/create', 'CoachesController@create')
+->name('coaches.create');
+
+Route::post('/coaches','CoachesController@store')
+->name('coaches.store');
+
+Route::get('/coaches/{coach}','CoachesController@show')
+->name('coaches.show');
+
