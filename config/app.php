@@ -162,6 +162,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         'Webpatser\Countries\CountriesServiceProvider',
+        Yajra\DataTables\DataTablesServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -227,6 +228,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Countries' => 'Webpatser\Countries\CountriesFacade',
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
 
     ],
 

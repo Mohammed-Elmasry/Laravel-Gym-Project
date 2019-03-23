@@ -14,7 +14,7 @@ class AddCountryIdColumnToCitiesTable extends Migration
     public function up()
     {
         Schema::table('cities', function (Blueprint $table) {
-            $table->unsignedbigInteger('country_id')->nullable();
+            $table->unsignedInteger('country_id')->nullable();
             $table->foreign('country_id')->references('id')->on('countries');
         });
     }
