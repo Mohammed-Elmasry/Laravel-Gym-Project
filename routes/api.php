@@ -11,8 +11,8 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::get('/users', 'UsersApiController@index');
+Auth::routes(['verify' => true]);
+Route::get('/users', 'UsersApiController@index')->name('home')->middleware('verified');
 Route::get('/users/{user}', 'UsersApiController@show')->middleware('auth:api');
 Route::get('/users/{user}/edit', 'UsersApiController@edit');
 Route::post('/users', 'UsersApiController@store');
