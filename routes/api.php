@@ -13,6 +13,6 @@
 */
 
 Route::get('/users', 'UsersApiController@index');
-Route::get('/users/{user}', 'UsersApiController@show');
+Route::get('/users/{user}', 'UsersApiController@show')->middleware('auth:api');
 Route::get('/users/{user}/edit', 'UsersApiController@edit');
 Route::post('/users', 'UsersApiController@store');

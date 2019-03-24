@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use Hash;
 
 class UsersApiController extends Controller
 {
@@ -39,11 +40,13 @@ class UsersApiController extends Controller
         DB::table('users')->insert(
             [
                 'name' => $name,
-                'password' => $pw,
+                'password' => Hash::make($pw),
                 'email' => $email,
                 'gender' => $gender,
                 'date_of_birth' => $dob,
                 'profile_img' => $img,
+                'created_at' => now(),
+                'role' => 'user',
                 ]
         );
     }
