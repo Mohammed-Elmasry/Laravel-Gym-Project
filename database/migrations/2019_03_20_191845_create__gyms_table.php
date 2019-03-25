@@ -20,7 +20,7 @@ class CreateGymsTable extends Migration
             $table->string('cover_image');
             $table->integer('revenue');
             $table->unsignedbigInteger('city_id');
-            $table->foreign('city_id')->references('id')->on('cities');
+            $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
         });
     }
 

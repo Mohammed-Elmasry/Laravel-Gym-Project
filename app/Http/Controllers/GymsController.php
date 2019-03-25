@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Gym;
+use App\User;
 use Yajra\Datatables\Datatables;
 
 class GymsController extends Controller

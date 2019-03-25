@@ -15,7 +15,7 @@ class AddCountryIdColumnToCitiesTable extends Migration
     {
         Schema::table('cities', function (Blueprint $table) {
             $table->unsignedInteger('country_id')->nullable();
-            $table->foreign('country_id')->references('id')->on('countries');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
     }
 

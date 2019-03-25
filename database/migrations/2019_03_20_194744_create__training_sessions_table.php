@@ -19,7 +19,7 @@ class CreateTrainingSessionsTable extends Migration
             $table->date('start_at');
             $table->date('finish_at');
             $table->unsignedbigInteger('gym_id');
-            $table->foreign('gym_id')->references('id')->on('gyms');
+            $table->foreign('gym_id')->references('id')->on('gyms')->onDelete('cascade');
         });
     }
 
