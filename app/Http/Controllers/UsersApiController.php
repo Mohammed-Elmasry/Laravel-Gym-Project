@@ -46,6 +46,7 @@ class UsersApiController extends Controller
                 'date_of_birth' => $dob,
                 'profile_img' => $img,
                 'created_at' => now(),
+                'updated_at' => now(),
                 'role' => 'user',
                 ]
         );
