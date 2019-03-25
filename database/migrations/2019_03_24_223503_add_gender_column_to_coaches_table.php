@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCoachesTable extends Migration
+class AddGenderColumnToCoachesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateCoachesTable extends Migration
      */
     public function up()
     {
-        Schema::create('coaches', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
-            $table->string('name',100);
-            $table->string('gender',100);
+        Schema::table('coaches', function (Blueprint $table) {
+            $table->enum('gender',['male','female']);
         });
     }
 
@@ -28,6 +25,8 @@ class CreateCoachesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('_coaches');
+        Schema::table('coaches', function (Blueprint $table) {
+            //
+        });
     }
 }

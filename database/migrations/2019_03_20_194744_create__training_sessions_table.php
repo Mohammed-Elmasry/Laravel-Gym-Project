@@ -18,8 +18,6 @@ class CreateTrainingSessionsTable extends Migration
             $table->string('name',100);
             $table->date('start_at');
             $table->date('finish_at');
-            $table->unsignedbigInteger('coach_id');
-            $table->foreign('coach_id')->references('id')->on('coaches');
             $table->unsignedbigInteger('gym_id');
             $table->foreign('gym_id')->references('id')->on('gyms');
         });
