@@ -17,7 +17,7 @@ class CreateCitiesTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->string('name',100);
-            $table->integer('revenue');
+            $table->integer('revenue')->default(0);
         });
     }
 

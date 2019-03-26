@@ -17,7 +17,6 @@ class CreateCoachesTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->string('name',100);
-            $table->string('gender',100);
         });
     }
 

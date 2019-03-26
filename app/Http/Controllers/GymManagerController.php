@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 class GymManagerController extends Controller
 {
     public function index(){
-        return view('gymmanger.index');
+        return view('gymmanager.index');
     }
 
     public function get_gymmanagerdata(){
@@ -24,7 +24,7 @@ class GymManagerController extends Controller
 
     public function create(){
         $Gyms = Gym::all();
-        return view('gymmanger.create',[
+        return view('gymmanager.create',[
             'Gyms' => $Gyms,
         ]);
     }
@@ -37,14 +37,14 @@ class GymManagerController extends Controller
         $user->gym_id = $data['gym_id'];
         $user->role = 'gym_manager';    
         $user->save();
-        return redirect()->route('gymmanger.index');
+        return redirect()->route('gymmanager.index');
     }
 
     public function edit($gymmanager)
     {
         $gymmanager=User::find($gymmanager);
         $Gyms = Gym::all();
-        return view ('gymmanger.edit',[
+        return view ('gymmanager.edit',[
             'gymmanager'=>$gymmanager,
             'Gyms' => $Gyms,
           ]);
@@ -53,6 +53,6 @@ class GymManagerController extends Controller
     public function destroy(User $gymmanager)
     {
          $gymmanager->delete();
-         return redirect()->route('gymmanger.index');
+         return redirect()->route('gymmanager.index');
     } 
 }

@@ -41,16 +41,11 @@ Route ::post('/citymanager', 'CityManagerController@store')
 Route ::get('/gymmanager', 'GymManagerController@index')
 ->name('gymmanager.index');
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 392c269... modification
 Route ::get('gymmanager/get_gymmanagerdata','GymManagerController@get_gymmanagerdata');
 
-Route ::get('gymmanager/create','GymManagerController@create')
-=======
+Route ::get('gymmanager/create','GymManagerController@create');
+
 Route ::get('gymmanager/create', 'GymManagerController@create')
->>>>>>> 273cbe89deefcabddea10d68f57df675b1d06222
 ->name('gymmanager.create');
 
 Route ::post('/gymmanager', 'GymManagerController@store')
