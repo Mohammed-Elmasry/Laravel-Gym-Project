@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,7 @@ Route::get('/users', 'UsersApiController@index')->name('home')->middleware('veri
 Route::get('/users/{user}', 'UsersApiController@show')->middleware('auth:api');
 Route::get('/users/{user}/edit', 'UsersApiController@edit');
 Route::post('/users', 'UsersApiController@store');
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
