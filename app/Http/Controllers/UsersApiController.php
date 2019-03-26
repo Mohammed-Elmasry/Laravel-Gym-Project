@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\DB;
+use Hash;
 
 class UsersApiController extends Controller
 {
@@ -26,6 +28,28 @@ class UsersApiController extends Controller
      */
     public function store(Request $request)
     {
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $pw = $request->input('password');
+        //$pw = $request->input('conf_password');
+
+        $gender = $request->input('gender');
+        $dob = $request->input('date_of_birth');
+        $img = $request->input('profile_img');
+
+        DB::table('users')->insert(
+            [
+                'name' => $name,
+                'password' => Hash::make($pw),
+                'email' => $email,
+                'gender' => $gender,
+                'date_of_birth' => $dob,
+                'profile_img' => $img,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'role' => 'user',
+                ]
+        );
     }
 
     /**
@@ -35,9 +59,11 @@ class UsersApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(User $id)
+    public function show($id)
     {
-        return $id;
+        $data = User::findOrFail($id);
+
+        return $data;
     }
 
     /**
