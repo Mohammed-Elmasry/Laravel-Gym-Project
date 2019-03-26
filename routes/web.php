@@ -42,6 +42,9 @@ Route ::get('/gymmanager', 'GymManagerController@index')
 ->name('gymmanager.index');
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 392c269... modification
 Route ::get('gymmanager/get_gymmanagerdata','GymManagerController@get_gymmanagerdata');
 
 Route ::get('gymmanager/create','GymManagerController@create')
