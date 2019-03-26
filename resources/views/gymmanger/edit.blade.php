@@ -15,16 +15,17 @@
     </div>
 @endif
 <br>
-<form action="{{route('gymmanager.store')}}" method='POST'>
+<form action="/gymmanager/{{ $gymmanager->id }}" method='POST'>
 @csrf
+{{ method_field('PATCH')}}
   <fieldset >
     <div class="form-group">
       <label for="disabledTextInput">Name :</label>
-      <input type="text" name="name" id="disabledTextInput" class="form-control" placeholder="Enter your Name">
+      <input type="text" name="name" id="disabledTextInput" class="form-control" value ="{{$gymmanager->name}}">
     </div>
     <div class="form-group">
       <label for="disabledTextInput">Email :</label>
-      <input type="email" name="email" id="disabledTextInput" class="form-control" placeholder="Enter your Email">
+      <input type="email" name="email" id="disabledTextInput" class="form-control" value ="{{$gymmanager->email}}">
     </div>
     <div class="form-group">
       <label for="disabledTextInput">Password :</label>
@@ -32,7 +33,7 @@
     </div>
     <div class="form-group">
       <label for="disabledTextInput">National Id:</label>
-      <input type="number" name="Nationalid"  class="form-control" placeholder="Enter your National Id ">
+      <input type="number" name="Nationalid"  class="form-control" value ="{{$gymmanager->National_id}}">
     </div>
 
     <div class="form-group">
@@ -57,7 +58,7 @@
     <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1" >
    </div>
  
-    <button type="submit" class="btn btn-success">Add Gym Manager</button>
+    <button type="submit" class="btn btn-success">Edit Gym Manager</button>
   </fieldset>
 </form>
 

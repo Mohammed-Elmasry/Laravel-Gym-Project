@@ -41,11 +41,23 @@ Route ::post('/citymanager','CityManagerController@store')
 Route ::get('/gymmanager','GymManagerController@index')
 ->name('gymmanager.index');
 
+Route ::get('gymmanager/get_gymmanagerdata','GymManagerController@get_gymmanagerdata');
+
 Route ::get('gymmanager/create','GymManagerController@create')
 ->name('gymmanager.create');
 
 Route ::post('/gymmanager','GymManagerController@store')
 ->name('gymmanager.store');
+
+Route ::get('/gymmanager/{gymmanager}/edit','GymManagerController@edit')
+->name('gymmanager.edit');
+
+Route ::patch('/gymmanager/{gymmanager}','GymManagerController@update')
+->name('gymmanager.update');
+
+Route::DELETE('/gymmanager/{gymmanager}','GymManagerController@destroy')
+->name('gymmanager.destroy');
+
 //---------------------------
  Route ::get('/gym','GymsController@index')
 ->name('gym.index');
