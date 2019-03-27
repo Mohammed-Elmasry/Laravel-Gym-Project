@@ -8,32 +8,23 @@ class CreateTrainingSessionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::create('training_sessions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name',100);
+            $table->string('name', 100);
             $table->date('start_at');
             $table->date('finish_at');
-<<<<<<< HEAD
             $table->unsignedbigInteger('coach_id');
             $table->foreign('coach_id')->references('id')->on('coaches');
             $table->unsignedbigInteger('gym_id');
             $table->foreign('gym_id')->references('id')->on('gyms');
-=======
-            $table->unsignedbigInteger('gym_id');
-            $table->foreign('gym_id')->references('id')->on('gyms')->onDelete('cascade');
->>>>>>> e08178c4ba148df79a043e80263c8637b7af7e14
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
