@@ -2,7 +2,7 @@
 
 @section('content') 
 <br>
-<a  class="btn btn-info btn-sm" style="float: right;" href="{{route('gymmanager.index')}}" >Back</a>
+<a  class="btn btn-info btn-sm" style="float: right;" href="{{route('citymanager.index')}}" >Back</a>
 <br>
 
 @if ($errors->any())
@@ -15,25 +15,25 @@
     </div>
 @endif
 <br>
-<form action="/gymmanager/{{$gymmanager->id}}" method='POST'>
+<form action="/citymanager/{{$citymanager->id}}" method='POST'>
 @csrf
 {{ method_field('PATCH')}}
   <fieldset >
     <div class="form-group">
       <label for="disabledTextInput">Name :</label>
-      <input type="text" name="name" id="disabledTextInput" class="form-control" value ="{{$gymmanager->name}}">
+      <input type="text" name="name" id="disabledTextInput" class="form-control" value ="{{$citymanager->name}}">
     </div>
     <div class="form-group">
       <label for="disabledTextInput">Email :</label>
-      <input type="email" name="email" id="disabledTextInput" class="form-control" value ="{{$gymmanager->email}}">
+      <input type="email" name="email" id="disabledTextInput" class="form-control" value ="{{$citymanager->email}}">
     </div>
     <div class="form-group">
       <label for="disabledTextInput">Password :</label>
-      <input type="password" name="password" id="disabledTextInput" class="form-control" value ="{{$gymmanager->password}}">
+      <input type="password" name="password" id="disabledTextInput" class="form-control" value ="{{$citymanager->password}}">
     </div>
     <div class="form-group">
       <label for="disabledTextInput">National Id:</label>
-      <input type="number" name="Nationalid"  class="form-control" value ="{{$gymmanager->National_id}}">
+      <input type="number" name="Nationalid"  class="form-control" value ="{{$citymanager->National_id}}">
     </div>
 
     <div class="form-group">
@@ -45,10 +45,10 @@
     </div>
 
     <div class="form-group">
-    <label for="disabledTextInput"> Choose Gym:</label>
-    <select  id="exampleFormControlSelect1" name="gym_id">
-    @foreach ($Gyms as $Gym)
-    <option value="{{$Gym->id}}">{{$Gym->name}}</option>
+    <label for="disabledTextInput"> Choose City:</label>
+    <select  id="exampleFormControlSelect1" name="city_id">
+    @foreach ($Cities as $City)
+    <option value="{{$City->id}}">{{$City->name}}</option>
       @endforeach
     </select>
     </div>
@@ -58,7 +58,7 @@
     <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1" >
    </div>
  
-    <button type="submit" class="btn btn-success">Edit Gym Manager</button>
+    <button type="submit" class="btn btn-success">Edit City Manager</button>
   </fieldset>
 </form>
 

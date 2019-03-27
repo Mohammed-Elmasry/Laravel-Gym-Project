@@ -157,6 +157,8 @@ class ComposerStaticInit2adf1d1d810946eb40ce941d137e6a84
         'C' => 
         array (
             'Cron\\' => 5,
+            'Cog\\Laravel\\Ban\\' => 16,
+            'Cog\\Contracts\\Ban\\' => 18,
             'Carbon\\' => 7,
         ),
         'B' => 
@@ -413,6 +415,14 @@ class ComposerStaticInit2adf1d1d810946eb40ce941d137e6a84
         array (
             0 => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron',
         ),
+        'Cog\\Laravel\\Ban\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/cybercog/laravel-ban/src',
+        ),
+        'Cog\\Contracts\\Ban\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/cybercog/laravel-ban/contracts',
+        ),
         'Carbon\\' => 
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
@@ -495,7 +505,8 @@ class ComposerStaticInit2adf1d1d810946eb40ce941d137e6a84
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Requests\\Coach\\StoreCoachRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Coach/StoreCoachRequest.php',
-        'App\\Http\\Requests\\USer\\StoreUserRequest' => __DIR__ . '/../..' . '/app/Http/Requests/User/StoreUserRequest.php',
+        'App\\Http\\Requests\\User\\StoreUserRequest' => __DIR__ . '/../..' . '/app/Http/Requests/User/StoreUserRequest.php',
+        'App\\Http\\Requests\\User\\UpdateUserRequest' => __DIR__ . '/../..' . '/app/Http/Requests/User/UpdateUserRequest.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
@@ -535,6 +546,23 @@ class ComposerStaticInit2adf1d1d810946eb40ce941d137e6a84
         'Carbon\\Traits\\Units' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Units.php',
         'Carbon\\Traits\\Week' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Week.php',
         'Carbon\\Translator' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Translator.php',
+        'Cog\\Contracts\\Ban\\Ban' => __DIR__ . '/..' . '/cybercog/laravel-ban/contracts/Ban.php',
+        'Cog\\Contracts\\Ban\\BanService' => __DIR__ . '/..' . '/cybercog/laravel-ban/contracts/BanService.php',
+        'Cog\\Contracts\\Ban\\Bannable' => __DIR__ . '/..' . '/cybercog/laravel-ban/contracts/Bannable.php',
+        'Cog\\Laravel\\Ban\\Console\\Commands\\DeleteExpiredBans' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Console/Commands/DeleteExpiredBans.php',
+        'Cog\\Laravel\\Ban\\Events\\ModelWasBanned' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Events/ModelWasBanned.php',
+        'Cog\\Laravel\\Ban\\Events\\ModelWasUnbanned' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Events/ModelWasUnbanned.php',
+        'Cog\\Laravel\\Ban\\Http\\Middleware\\ForbidBannedUser' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Http/Middleware/ForbidBannedUser.php',
+        'Cog\\Laravel\\Ban\\Http\\Middleware\\LogsOutBannedUser' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Http/Middleware/LogsOutBannedUser.php',
+        'Cog\\Laravel\\Ban\\Models\\Ban' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Models/Ban.php',
+        'Cog\\Laravel\\Ban\\Observers\\BanObserver' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Observers/BanObserver.php',
+        'Cog\\Laravel\\Ban\\Providers\\BanServiceProvider' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Providers/BanServiceProvider.php',
+        'Cog\\Laravel\\Ban\\Scopes\\BannedAtScope' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Scopes/BannedAtScope.php',
+        'Cog\\Laravel\\Ban\\Services\\BanService' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Services/BanService.php',
+        'Cog\\Laravel\\Ban\\Traits\\Bannable' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Traits/Bannable.php',
+        'Cog\\Laravel\\Ban\\Traits\\HasBannedAtHelpers' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Traits/HasBannedAtHelpers.php',
+        'Cog\\Laravel\\Ban\\Traits\\HasBannedAtScope' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Traits/HasBannedAtScope.php',
+        'Cog\\Laravel\\Ban\\Traits\\HasBansRelation' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Traits/HasBansRelation.php',
         'CountriesSeeder' => __DIR__ . '/../..' . '/database/seeds/CountriesSeeder.php',
         'Cron\\AbstractField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/AbstractField.php',
         'Cron\\CronExpression' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/CronExpression.php',

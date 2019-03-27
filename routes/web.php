@@ -32,18 +32,28 @@ Route::get('/coaches/{coach}', 'CoachesController@show')
 Route ::get('/citymanager', 'CityManagerController@index')
 ->name('citymanager.index');
 
+Route ::get('citymanager/get_citymanagerdata','CityManagerController@get_citymanagerdata');
+
 Route ::get('citymanager/create', 'CityManagerController@create')
 ->name('citymanager.create');
 
 Route ::post('/citymanager', 'CityManagerController@store')
 ->name('citymanager.store');
+
+Route ::get('/citymanager/{citymanager}/edit','CityManagerController@edit')
+->name('citymanager.edit');
+
+Route ::patch('/citymanager/{citymanager}','CityManagerController@update')
+->name('citymanager.update');
+
+Route::DELETE('/citymanager/{citymanager}','CityManagerController@destroy')
+->name('citymanager.destroy');
+
 //---------------------------
 Route ::get('/gymmanager', 'GymManagerController@index')
 ->name('gymmanager.index');
 
 Route ::get('gymmanager/get_gymmanagerdata','GymManagerController@get_gymmanagerdata');
-
-Route ::get('gymmanager/create','GymManagerController@create');
 
 Route ::get('gymmanager/create', 'GymManagerController@create')
 ->name('gymmanager.create');

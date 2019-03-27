@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Gym;
 use App\Http\Requests\User\StoreUserRequest ;
+use App\Http\Requests\User\UpdateUserRequest ;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\DB;
 
@@ -38,6 +39,7 @@ class GymManagerController extends Controller
         $user->role = 'gym_manager';    
         $user->save();
         return redirect()->route('gymmanager.index');
+        
     }
 
     public function edit($gymmanager)
@@ -50,9 +52,24 @@ class GymManagerController extends Controller
           ]);
     }
 
+    public function update(UpdateUserRequest  $request,User  $gymmanager)
+    {
+      $gymmanager->name = request()->all()['name'];
+      $gymmanager->email = request()->all()['email'];
+      $gymmanager->National_id = request()->all()['Nationalid'];
+      $gymmanager->gender = request()->all()['gender'];
+      $gymmanager->gym_id = request()->all()['gym_id'];
+      $gymmanager->password = request()->all()['password'];
+      $gymmanager->role = 'gym_manager';  
+      $gymmanager->save();
+        return redirect()->route('gymmanager.index');
+
+    }
+
     public function destroy(User $gymmanager)
     {
          $gymmanager->delete();
          return redirect()->route('gymmanager.index');
     } 
 }
+
