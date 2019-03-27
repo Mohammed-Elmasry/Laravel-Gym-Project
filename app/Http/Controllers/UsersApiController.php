@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+// use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Hash;
 use Validator;
+
 class UsersApiController extends Controller
 {
     /**
@@ -31,50 +34,47 @@ class UsersApiController extends Controller
         $name = $request->input('name');
         $email = $request->input('email');
         $password = $request->input('password');
-        $password1= $request->input('conf_password');
+        $password1 = $request->input('conf_password');
         $gender = $request->input('gender');
         $dob = $request->input('date_of_birth');
         $img = $request->input('profile_img');
-        if($password === $password1)
-        {
-             $pw = Hash::make($password) ;
-        } else 
-        {
+        if ($password === $password1) {
+            $pw = Hash::make($password);
+        } else {
             return response()->json([
-                'message' => 'Password Does not Match With Confirm Password '
-            ],401);
+                'message' => 'Password Does not Match With Confirm Password ',
+            ], 401);
         }
-        $validator = Validator::make($request->all(), 
-        [
-            'password' => ['required','min:6'],
-            'name'=>['required'],
-            'email'=>['required ','email','unique:users'],
-            'gender'=>['required'],
-            'date_of_birth'=>['required ',' date'],
-            'profile_img'=>['required','mimes:jpeg,jpg'],
-        ]);
-        if ( $validator->fails() ) 
-        {
-            return response()->json( [ 'errors' => $validator->errors() ], 400 );
-        }        
-        else 
-        {        
+        $validator = Validator::make(
+            $request->all(),
+            [
+            'password' => ['required', 'min:6'],
+            'name' => ['required'],
+            'email' => ['required ', 'email', 'unique:users'],
+            'gender' => ['required'],
+            'date_of_birth' => ['required ', ' date'],
+            'profile_img' => ['required'],
+        ]
+        );
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        } else {
             DB::table('users')->insert(
                 [
-                    'name' =>$name,
+                    'name' => $name,
                     'password' => $pw,
                     'email' => $email,
-                    'gender'=>$gender,
-                    'date_of_birth'=>$dob,
-                    'profile_img'=>$img,
-                     'created_at'=> now(),
-                     'role'=>'user',
+                    'gender' => $gender,
+                    'date_of_birth' => $dob,
+                    'profile_img' => $img,
+                     'created_at' => now(),
+                     'role' => 'user',
                 ]
             );
+
             return response()->json([
-                'message' => 'Your Register is Success , please verify your email.'
-            ],201);
-    
+                'message' => 'Your Register is Success , please verify your email.',
+            ], 201);
         }
     }
 
@@ -116,57 +116,52 @@ class UsersApiController extends Controller
     {
         $name = $request->input('name');
         $password = $request->input('password');
-        $newpassword1= $request->input('conf_new_password');
+        $newpassword1 = $request->input('conf_new_password');
         $gender = $request->input('gender');
         $dob = $request->input('date_of_birth');
         $img = $request->input('profile_img');
         $newpassword = $request->input('new_password');
-        
-        $validator = Validator::make($request->all(), 
-        [
+
+        $validator = Validator::make(
+            $request->all(),
+            [
             'password' => ['min:6'],
-            'date_of_birth'=>['date'],
-            'profile_img'=>['mimes:jpeg,jpg'],
-        ]);
-        
-        if ( $validator->fails() ) 
-        {
-            return response()->json( [ 'errors' => $validator->errors() ], 400 );
-        }   
-        else
-        {
-                if($password !== $newpassword)
-                {
-                    if($newpassword ===  $newpassword1)
-                    {
-                        $pw = Hash::make($password) ;
-                        DB::table('users') 
+            'date_of_birth' => ['date'],
+            'profile_img' => ['mimes:jpeg,jpg'],
+        ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        } else {
+            if ($password !== $newpassword) {
+                if ($newpassword === $newpassword1) {
+                    $pw = Hash::make($password);
+                    DB::table('users')
                         ->where('id', $id)
                         ->update([
-                            'name'=>$name,
-                            'password'=>$pw,
-                            'gender'=>$gender,
-                            'date_of_birth'=>$dob,
-                            'profile_img'=> $img,
-                            'updated_at'=> now(),
+                            'name' => $name,
+                            'password' => $pw,
+                            'gender' => $gender,
+                            'date_of_birth' => $dob,
+                            'profile_img' => $img,
+                            'updated_at' => now(),
                         ]);
-                        return response()->json([
-                            'message' => 'Your Data Updated Successfully  .'
-                        ],200);
-                    }
-                    else
-                    {
-                        return response()->json([
-                            'message' => 'Password Does not Match With Confirm Password '
-                        ],401);
-                    }
-                }
-                else{
+
                     return response()->json([
-                        'message' => ' Your Password Did not Change'
-                    ],400);
+                            'message' => 'Your Data Updated Successfully  .',
+                        ], 200);
+                } else {
+                    return response()->json([
+                            'message' => 'Password Does not Match With Confirm Password ',
+                        ], 401);
                 }
-    }
+            } else {
+                return response()->json([
+                        'message' => ' Your Password Did not Change',
+                    ], 400);
+            }
+        }
     }
 
     /**
@@ -178,5 +173,84 @@ class UsersApiController extends Controller
      */
     public function destroy($id)
     {
+    }
+
+    public function attend_session($request, $id)
+    {
+        dd($request);
+    }
+
+    /**
+     * Create a new AuthController instance.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login']]);
+    }
+
+    /**
+     * Get a JWT via given credentials.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if ($token = JWTAuth::attempt($credentials)) {
+            return $this->respondWithToken($token);
+        }
+
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    /**
+     * Get the authenticated User.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function me()
+    {
+        return response()->json(auth()->user());
+    }
+
+    /**
+     * Log the user out (Invalidate the token).
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        auth()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    /**
+     * Refresh a token.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh()
+    {
+        return $this->respondWithToken(auth()->refresh());
+    }
+
+    /**
+     * Get the token array structure.
+     *
+     * @param string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+        // dd($token);
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
+        ]);
     }
 }

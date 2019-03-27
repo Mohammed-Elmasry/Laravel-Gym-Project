@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Webpatser\\Countries' => array($vendorDir . '/webpatser/laravel-countries/src'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src'),
     'Parsedown' => array($vendorDir . '/erusev/parsedown'),
