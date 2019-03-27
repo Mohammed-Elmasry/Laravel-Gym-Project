@@ -38,10 +38,10 @@ class UsersApiController extends Controller
         $gender = $request->input('gender');
         $dob = $request->input('date_of_birth');
         $img = $request->input('profile_img');
+        $message = "Welocome to Our Site";
         if($password === $password1)
         {
              $pw = Hash::make($password) ;
-            //  $pw=Crypt::encrypt($password);
         } else 
         {
             return response()->json([
@@ -79,8 +79,9 @@ class UsersApiController extends Controller
             return response()->json([
                 'message' => 'Your Register is Success , please verify your email.'
             ],201);
-            // $user = DB::table('users')->get()->last();
-            // $user->notify(new WelcomeMail());
+            
+             $user = DB::table('users')->get()->last();
+             $user->notify(new WelcomeMail($message));
             
         }
 
