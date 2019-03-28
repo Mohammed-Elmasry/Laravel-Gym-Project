@@ -93,18 +93,6 @@ class UsersApiController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $id)
-    {
-        return $id;
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -114,6 +102,10 @@ class UsersApiController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $pw = Hash::make($request->input('password'));
+        $dbpw = DB::table('users')->where('id', $id)->get('password');
+        dd($dbpw, $pw);
+
         $name = $request->input('name');
         $password = $request->input('password');
         $newpassword1 = $request->input('conf_new_password');
@@ -175,9 +167,31 @@ class UsersApiController extends Controller
     {
     }
 
-    public function attend_session($request, $id)
+    public function attend_session(request $request, $id)
     {
-        dd($request);
+        // dd($request->username);
+        $remaining_sessions = DB::table('users')->where('email', $request->username)->get('Remaning_session');
+        dd($remaining_sessions);
+        if ($remaining_sessions > 0) {
+            return 'you can book a session';
+            DB::table('users')->where('email', $request->username) - update([
+                'Remaing_session' => $remaining_sessions - 1,
+            ]);
+        } else {
+            return 'please buy a package to book sessions';
+        }
+
+        $username = $request->input('username');
+        $session_name = $request->input('session_name');
+        $attendance_time = $request->input('attendance_time');
+        $attendance_date = $request->input('attendance_date');
+
+        DB::table('attendance')->insert([
+            'username' => $username,
+            'training_session_name' => $session_name,
+            'attendance_time' => $attendance_time,
+            'attendance_date' => $attendance_date,
+            ]);
     }
 
     /**
@@ -185,7 +199,7 @@ class UsersApiController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'store']]);
     }
 
     /**
