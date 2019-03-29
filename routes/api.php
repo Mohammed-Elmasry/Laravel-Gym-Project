@@ -12,6 +12,7 @@
 |
 */
 
+Route::post('/sessions/attend', 'UsersApiController@attend_session');
 Auth::routes(['verify' => true]);
 
 Route::group([
@@ -22,8 +23,7 @@ Route::group([
     Route::get('/users', 'UsersApiController@index'); //->middleware('auth:api');
     Route::get('/users/{user}', 'UsersApiController@show')->middleware('verified');
     Route::get('/users/{user}/edit', 'UsersApiController@edit');
-    Route::put('/users/{user}', 'UsersApiController@update')->middleware('auth:api');
-    Route::post('/sessions/{id}/attend', 'UsersApiController@attend_session')->middleware('auth:api');
+    Route::put('/users/{user}', 'UsersApiController@update');
 
     Route::post('/login', 'UsersApiController@login'); //->middleware('verified');
     Route::post('/logout', 'UsersApiController@logout');

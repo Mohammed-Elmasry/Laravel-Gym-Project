@@ -167,31 +167,50 @@ class UsersApiController extends Controller
     {
     }
 
-    public function attend_session(request $request, $id)
+    public function attend_session(request $request)
     {
-        // dd($request->username);
-        $remaining_sessions = DB::table('users')->where('email', $request->username)->get('Remaning_session');
-        dd($remaining_sessions);
-        if ($remaining_sessions > 0) {
-            return 'you can book a session';
-            DB::table('users')->where('email', $request->username) - update([
-                'Remaing_session' => $remaining_sessions - 1,
-            ]);
-        } else {
-            return 'please buy a package to book sessions';
-        }
+        $mail = $request->email;
+        $todays_conforming_sessions = DB::table('training_sessions')->whereDate('start_at', today())->where('name', $request->input('training_session_name'))->get();
+        $remaining_sessions = (array) (DB::table('users')->where('email', $mail)->get('Remaning_session'))[0];
 
-        $username = $request->input('username');
-        $session_name = $request->input('session_name');
+        $validation = Validator::make($request->all(), [
+            'training_session_name' => ['required'],
+            'email' => ['required'],
+            'attendance_time' => ['required'],
+            'attendance_date' => ['required'],
+            ]);
+
+        $username = $request->input('email');
+        $session_name = $request->input('training_session_name');
         $attendance_time = $request->input('attendance_time');
-        $attendance_date = $request->input('attendance_date');
+        $attendance_date = today();
 
-        DB::table('attendance')->insert([
-            'username' => $username,
-            'training_session_name' => $session_name,
-            'attendance_time' => $attendance_time,
-            'attendance_date' => $attendance_date,
-            ]);
+        if (!$validation->fails()) {
+            if (count($todays_conforming_sessions) > 0) { //is there sessions to be booked today?
+                if ($remaining_sessions['Remaning_session'] > 0) { //if there's still sessions available
+                    // dd('you have enough remaining sessions');
+                    if (count(DB::table('attendance')->whereDate('attendance_date', today())->where('training_session_name', $request->input('training_session_name'))->get()) < count(DB::table('training_sessions')->whereDate('start_at', today())->where('name', $request->input('training_session_name'))->get())) {
+                        DB::table('users')->where('email', $mail)->update(['Remaning_session' => $remaining_sessions['Remaning_session'] - 1]);
+                        DB::table('attendance')->insert([
+                        'username' => $username,
+                        'training_session_name' => $session_name,
+                        'attendance_time' => $attendance_time,
+                        'attendance_date' => $attendance_date,
+                        ]);
+
+                        return 'Your session has been booked successfully!';
+                    } else {
+                        return 'You already attended this session';
+                    }
+                } else {
+                    return 'please buy a package to book sessions';
+                }
+            } else {
+                return "There isn't a conforming session to your requirements today! Please check with our gym manager";
+            }
+        } else {
+            return 'please fill all the required fields';
+        }
     }
 
     /**
