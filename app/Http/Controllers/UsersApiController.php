@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 // use Illuminate\Support\Facades\Auth;
+
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
 use App\User;
 use App\Notifications\WelcomeMail;
 use Illuminate\Support\Facades\DB;
 use Hash;
-use Illuminate\Support\Facades\Crypt ;
+use Illuminate\Support\Facades\Crypt;
 use Validator;
 use Illuminate\Support\Facades\Notification;
-use  Illuminate\Notifications\RoutesNotifications;
+use Illuminate\Notifications\RoutesNotifications;
+
 class UsersApiController extends Controller
 {
     /**
@@ -41,7 +43,7 @@ class UsersApiController extends Controller
         $gender = $request->input('gender');
         $dob = $request->input('date_of_birth');
         $img = $request->input('profile_img');
-        
+
         if ($password === $password1) {
             $pw = Hash::make($password);
         } else {
@@ -49,52 +51,46 @@ class UsersApiController extends Controller
                 'message' => 'Password Does not Match With Confirm Password ',
             ], 401);
         }
-        $validator = Validator::make($request->all(), 
-        [
-            'password' => ['required','min:6'],
-            'name'=>['required'],
-            'email'=>['required ','email','unique:users'],
-            'gender'=>['required'],
-            'date_of_birth'=>['required ',' date'],
-            'profile_img'=>['required'],
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'password' => ['required', 'min:6'],
+                'name' => ['required'],
+                'email' => ['required ', 'email', 'unique:users'],
+                'gender' => ['required'],
+                'date_of_birth' => ['required ', ' date'],
+                'profile_img' => ['required'],
+            ]
+        );
         //,'mimes:jpeg,jpg'
-        if ( $validator->fails() ) 
-        {
-            return response()->json( [ 'errors' => $validator->errors() ], 400 );
-        }        
-        else 
-        {        
-            DB::table('users')->insert(
-                [
-                    'name' => $name,
-                    'password' => $pw,
-                    'email' => $email,
-                    'gender' => $gender,
-                    'date_of_birth' => $dob,
-                    'profile_img' => $img,
-                     'created_at' => now(),
-                     'role' => 'user',
-                ]
-            );
-            $user = DB::table('users')->get()->last();
-            //$user->notify(new WelcomeMail($message));
-            $message=[
-                'greeting'=>'Hello!',
-                'body'=>'Welcome to Our Site!'
-            ];
-            // Notification::send($user , new WelcomeMail($message));
-            // $user->notify(new WelcomeMail($message));
+        if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 400);
+            } else {
+                DB::table('users')->insert(
+                    [
+                        'name' => $name,
+                        'password' => $pw,
+                        'email' => $email,
+                        'gender' => $gender,
+                        'date_of_birth' => $dob,
+                        'profile_img' => $img,
+                        'created_at' => now(),
+                        'role' => 'user',
+                    ]
+                );
+                $user = DB::table('users')->get()->last();
+                //$user->notify(new WelcomeMail($message));
+                $message = [
+                    'greeting' => 'Hello!',
+                    'body' => 'Welcome to Our Site!'
+                ];
+                // Notification::send($user , new WelcomeMail($message));
+                // $user->notify(new WelcomeMail($message));
 
-            return response()->json([
-                'message' => 'Your Register is Success , please verify your email.'
-            ],201);
-            
-            
-             
-            
-        }
-
+                return response()->json([
+                    'message' => 'Your Register is Success , please verify your email.'
+                ], 201);
+            }
     }
 
     /**
@@ -126,77 +122,70 @@ class UsersApiController extends Controller
         dd($dbpw, $pw);
 
         $name = $request->input('name');
-        $pw= $request->input('password');
+        $pw = $request->input('password');
         $npw = $request->input('new_password');
-        $cnpw= $request->input('conf_new_password');
+        $cnpw = $request->input('conf_new_password');
         $gender = $request->input('gender');
         $dob = $request->input('date_of_birth');
         $img = $request->input('profile_img');
-        
-        
+
+
         // $validator = Validator::make($request->all(), 
         // [
         //     'password' => ['min:6'],
         //     'date_of_birth'=>['date'],
         //    // 'profile_img'=>['mimes:jpeg,jpg'],
         // ]);
-        
+
         // if ( $validator->fails() ) 
         // {
         //     return response()->json( [ 'errors' => $validator->errors() ], 400 );
         // }   
         // else
         // {       
-                $userpassword = Hash::make($pw);
-                // $userpassword = crypt::encrypt($pw);
-                $oldpassword = DB::table('users')->where('id',$id)->get('password');
-                // $oldpassword = crypt::decrypt($beforeoldpassword);
-                
-                // if($oldpassword === $userpassword)
-                
-                // if(Hash::check($userpassword, $oldpassword))
-                // if($oldpassword == $userpassword)
-                // if($oldpassword !== $userpassword)
-                //////////////////////////////
-                    // $user = DB::table('users')->where('id', $id)->first();
-                    // var_dump($user->password);
-                    // if($user && password_verify($userpassword, $user->password)) 
-                    if($oldpassword !== $userpassword)
-                {   
-                  
-                    if($npw === $cnpw)
-                    {
+        $userpassword = Hash::make($pw);
+        // $userpassword = crypt::encrypt($pw);
+        $oldpassword = DB::table('users')->where('id', $id)->get('password');
+        // $oldpassword = crypt::decrypt($beforeoldpassword);
+
+        // if($oldpassword === $userpassword)
+
+        // if(Hash::check($userpassword, $oldpassword))
+        // if($oldpassword == $userpassword)
+        // if($oldpassword !== $userpassword)
+        //////////////////////////////
+        // $user = DB::table('users')->where('id', $id)->first();
+        // var_dump($user->password);
+        // if($user && password_verify($userpassword, $user->password)) 
+        if ($oldpassword !== $userpassword) {
+
+                if ($npw === $cnpw) {
                         $newpassword = Hash::make($npw);
                         // $newpassword = $npw;
                         //= crypt::encrypt($npw);
-                        DB::table('users') 
-                                ->where('id', $id)
-                                ->update([
-                                    'name'=>$name,
-                                    'password'=>$newpassword,
-                                    'gender'=>$gender,
-                                    'date_of_birth'=>$dob,
-                                    'profile_img'=> $img,
-                                    'updated_at'=> now(),
-                                ]);
-                                return response()->json([
-                                    'message' => 'Your Data Updated Successfully  .'
-                                ],200);
-                    }
-                    else
-                    {
+                        DB::table('users')
+                            ->where('id', $id)
+                            ->update([
+                                'name' => $name,
+                                'password' => $newpassword,
+                                'gender' => $gender,
+                                'date_of_birth' => $dob,
+                                'profile_img' => $img,
+                                'updated_at' => now(),
+                            ]);
+                        return response()->json([
+                            'message' => 'Your Data Updated Successfully  .'
+                        ], 200);
+                    } else {
                         return response()->json([
                             'message' => 'Password Does not Match With Confirm Password '
-                        ],401);
+                        ], 401);
                     }
-                }
-                else{
-                        return response()->json([
-                            'message' => ' Your Password do not  match'
-                        ],400);
-                    }
-
-             
+            } else {
+            return response()->json([
+                'message' => ' Your Password do not  match'
+            ], 400);
+        }
     }
 
     /**
@@ -207,20 +196,19 @@ class UsersApiController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-    }
+    { }
 
     public function attend_session(request $request)
     {
         $mail = $request->email;
         $todays_conforming_sessions = DB::table('training_sessions')->whereDate('start_at', today())->where('name', $request->input('training_session_name'))->get();
-        $remaining_sessions = (array) (DB::table('users')->where('email', $mail)->get('Remaning_session'))[0];
+        $remaining_sessions = (array)(DB::table('users')->where('email', $mail)->get('Remaning_session'))[0];
 
         $validation = Validator::make($request->all(), [
             'training_session_name' => ['required'],
             'email' => ['required'],
             'attendance_time' => ['required'],
-            ]);
+        ]);
 
         $session_name = $request->input('training_session_name');
         $attendance_time = $request->input('attendance_time');
@@ -231,16 +219,16 @@ class UsersApiController extends Controller
                 if ($remaining_sessions['Remaning_session'] > 0) { //if there's still sessions available
                     if (count(DB::table('attendance')->whereDate('attendance_date', today())
                         ->where('training_session_name', $request->input('training_session_name'))
-                        ->where('username',$request->input('email'))
+                        ->where('username', $request->input('email'))
                         ->get()) < count(DB::table('training_sessions')->whereDate('start_at', today())
                         ->where('name', $request->input('training_session_name'))->get())) {
 
                         DB::table('users')->where('email', $mail)->update(['Remaning_session' => $remaining_sessions['Remaning_session'] - 1]);
                         DB::table('attendance')->insert([
-                        'username' => $request->input('email'),
-                        'training_session_name' => $session_name,
-                        'attendance_time' => $attendance_time,
-                        'attendance_date' => $attendance_date,
+                            'username' => $request->input('email'),
+                            'training_session_name' => $session_name,
+                            'attendance_time' => $attendance_time,
+                            'attendance_date' => $attendance_date,
                         ]);
 
                         return 'Your session has been booked successfully!';
@@ -263,8 +251,14 @@ class UsersApiController extends Controller
         return DB::table('users')->where('email', $request->input('email'))->get('Remaning_session');
     }
 
-    public function get_history(request $request){
-        return DB::table('attendance')->where('username',$request->name)->get();
+    public function get_history(request $request)
+    {
+
+        $gym_id = DB::table('training_sessions')->where('name', $request->training_session_name)
+            ->get('gym_id');
+        $gym_id = (array)$gym_id[0];
+        $gym_name = (array)DB::table('gyms')->where('id', $gym_id['gym_id'])->get('name')[0];
+        return [DB::table('attendance')->where('username', $request->name)->get(), DB::table('gyms')->where('id', $gym_id['gym_id'])->get()];
     }
     /**
      * Create a new AuthController instance.
