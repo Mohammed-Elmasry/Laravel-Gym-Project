@@ -8,7 +8,6 @@ use Illuminate\Notifications\Notifiable;
 use  Illuminate\Notifications\RoutesNotifications;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-
 class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 {
     use Notifiable;
