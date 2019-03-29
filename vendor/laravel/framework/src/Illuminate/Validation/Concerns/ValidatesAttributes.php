@@ -712,9 +712,13 @@ trait ValidatesAttributes
         if (isset($parameters[2])) {
             [$idColumn, $id] = $this->getUniqueIds($parameters);
 
+<<<<<<< HEAD
             if (! is_null($id)) {
                 $id = stripslashes($id);
             }
+=======
+            $id = stripslashes($id);
+>>>>>>> dc9fbd868f0a080b76464e62cbfc067133fa6d33
         }
 
         // The presence verifier is responsible for counting rows within this store

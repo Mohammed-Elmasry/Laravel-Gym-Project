@@ -159,7 +159,8 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+        Webpatser\Countries\CountriesServiceProvider::class,
+        Cog\Laravel\Ban\Providers\BanServiceProvider::class,
         /*
          * Package Service Providers...
          */

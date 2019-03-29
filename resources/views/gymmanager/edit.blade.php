@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content') 
 <br>
@@ -15,24 +15,33 @@
     </div>
 @endif
 <br>
-<form action="{{route('gymmanager.store')}}" method='POST'>
+<form action="/gymmanager/{{$gymmanager->id}}" method='POST'>
 @csrf
+{{ method_field('PATCH')}}
   <fieldset >
     <div class="form-group">
       <label for="disabledTextInput">Name :</label>
-      <input type="text" name="name" id="disabledTextInput" class="form-control" placeholder="Enter your Name">
+      <input type="text" name="name" id="disabledTextInput" class="form-control" value ="{{$gymmanager->name}}">
     </div>
     <div class="form-group">
       <label for="disabledTextInput">Email :</label>
-      <input type="email" name="email" id="disabledTextInput" class="form-control" placeholder="Enter your Email">
+      <input type="email" name="email" id="disabledTextInput" class="form-control" value ="{{$gymmanager->email}}">
     </div>
     <div class="form-group">
       <label for="disabledTextInput">Password :</label>
-      <input type="password" name="password" id="disabledTextInput" class="form-control" placeholder="Enter your Password">
+      <input type="password" name="password" id="disabledTextInput" class="form-control" value ="{{$gymmanager->password}}">
     </div>
     <div class="form-group">
       <label for="disabledTextInput">National Id:</label>
-      <input type="text" name="National_id" id="disabledTextInput" class="form-control" placeholder="Enter your National Id ">
+      <input type="number" name="Nationalid"  class="form-control" value ="{{$gymmanager->National_id}}">
+    </div>
+
+    <div class="form-group">
+    <label for="disabledTextInput"> Gender:</label>
+    <select  id="exampleFormControlSelect1" name="gender">
+    <option>male</option>
+    <option>female</option>
+    </select>
     </div>
 
     <div class="form-group">
@@ -49,7 +58,7 @@
     <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1" >
    </div>
  
-    <button type="submit" class="btn btn-success">Add Gym Manager</button>
+    <button type="submit" class="btn btn-success">Edit Gym Manager</button>
   </fieldset>
 </form>
 

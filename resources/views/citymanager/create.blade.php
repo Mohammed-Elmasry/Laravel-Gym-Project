@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content') 
 <br>
@@ -33,6 +33,14 @@
     <div class="form-group">
       <label for="disabledTextInput">National Id:</label>
       <input type="text" name="National_id" id="disabledTextInput" class="form-control" placeholder="Enter your National Id ">
+    </div>
+  
+    <div class="form-group">
+    <label for="disabledTextInput"> Gender:</label>
+    <select  id="exampleFormControlSelect1" name="gender">
+    <option>male</option>
+    <option>female</option>
+    </select>
     </div>
 
     <div class="form-group">
