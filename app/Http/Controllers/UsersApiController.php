@@ -84,7 +84,7 @@ class UsersApiController extends Controller
                 'body'=>'Welcome to Our Site!'
             ];
             // Notification::send($user , new WelcomeMail($message));
-            $user->notify(new WelcomeMail($message));
+            // $user->notify(new WelcomeMail($message));
 
             return response()->json([
                 'message' => 'Your Register is Success , please verify your email.'
@@ -220,10 +220,8 @@ class UsersApiController extends Controller
             'training_session_name' => ['required'],
             'email' => ['required'],
             'attendance_time' => ['required'],
-            'attendance_date' => ['required'],
             ]);
 
-        $username = $request->input('email');
         $session_name = $request->input('training_session_name');
         $attendance_time = $request->input('attendance_time');
         $attendance_date = today();
@@ -231,11 +229,15 @@ class UsersApiController extends Controller
         if (!$validation->fails()) {
             if (count($todays_conforming_sessions) > 0) { //is there sessions to be booked today?
                 if ($remaining_sessions['Remaning_session'] > 0) { //if there's still sessions available
-                    // dd('you have enough remaining sessions');
-                    if (count(DB::table('attendance')->whereDate('attendance_date', today())->where('training_session_name', $request->input('training_session_name'))->get()) < count(DB::table('training_sessions')->whereDate('start_at', today())->where('name', $request->input('training_session_name'))->get())) {
+                    if (count(DB::table('attendance')->whereDate('attendance_date', today())
+                        ->where('training_session_name', $request->input('training_session_name'))
+                        ->where('username',$request->input('email'))
+                        ->get()) < count(DB::table('training_sessions')->whereDate('start_at', today())
+                        ->where('name', $request->input('training_session_name'))->get())) {
+
                         DB::table('users')->where('email', $mail)->update(['Remaning_session' => $remaining_sessions['Remaning_session'] - 1]);
                         DB::table('attendance')->insert([
-                        'username' => $username,
+                        'username' => $request->input('email'),
                         'training_session_name' => $session_name,
                         'attendance_time' => $attendance_time,
                         'attendance_date' => $attendance_date,
@@ -258,10 +260,12 @@ class UsersApiController extends Controller
 
     public function get_remaining(request $request)
     {
-        dd($request->input('email'));
-        // return DB::table('users')->where('email', $request->input('email'))->get('Remaning_session');
+        return DB::table('users')->where('email', $request->input('email'))->get('Remaning_session');
     }
 
+    public function get_history(request $request){
+        return DB::table('attendance')->where('username',$request->name)->get();
+    }
     /**
      * Create a new AuthController instance.
      */

@@ -13,16 +13,17 @@
 */
 
 Route::post('/sessions/attend', 'UsersApiController@attend_session');
-Route::get('/sessions/remaining', 'UsersApiController@get_remaining');
+Route::post('/sessions/remaining', 'UsersApiController@get_remaining');
+Route::post('/sessions/history','UsersApiController@get_history');
+Route::post('/users', 'UsersApiController@store');
+Route::get('/users/{user}', 'UsersApiController@show')->middleware('verified');
 Auth::routes(['verify' => true]);
 
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth',
 ], function ($router) {
-    Route::post('/users', 'UsersApiController@store');
     Route::get('/users', 'UsersApiController@index'); //->middleware('auth:api');
-    Route::get('/users/{user}', 'UsersApiController@show')->middleware('verified');
     Route::get('/users/{user}/edit', 'UsersApiController@edit');
     Route::put('/users/{user}', 'UsersApiController@update');
 
