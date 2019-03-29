@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+// use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
 use App\User;
 use App\Notifications\WelcomeMail;
 use Illuminate\Support\Facades\DB;
 use Hash;
-// use crypt;
 use Illuminate\Support\Facades\Crypt ;
 use Validator;
+use Illuminate\Support\Facades\Notification;
+use  Illuminate\Notifications\RoutesNotifications;
 class UsersApiController extends Controller
 {
     /**
@@ -34,19 +37,17 @@ class UsersApiController extends Controller
         $name = $request->input('name');
         $email = $request->input('email');
         $password = $request->input('password');
-        $password1= $request->input('conf_password');
+        $password1 = $request->input('conf_password');
         $gender = $request->input('gender');
         $dob = $request->input('date_of_birth');
         $img = $request->input('profile_img');
-        $message = "Welocome to Our Site";
-        if($password === $password1)
-        {
-             $pw = Hash::make($password) ;
-        } else 
-        {
+        
+        if ($password === $password1) {
+            $pw = Hash::make($password);
+        } else {
             return response()->json([
-                'message' => 'Password Does not Match With Confirm Password '
-            ],401);
+                'message' => 'Password Does not Match With Confirm Password ',
+            ], 401);
         }
         $validator = Validator::make($request->all(), 
         [
@@ -55,7 +56,7 @@ class UsersApiController extends Controller
             'email'=>['required ','email','unique:users'],
             'gender'=>['required'],
             'date_of_birth'=>['required ',' date'],
-            'profile_img'=>['required' ],
+            'profile_img'=>['required'],
         ]);
         //,'mimes:jpeg,jpg'
         if ( $validator->fails() ) 
@@ -66,22 +67,31 @@ class UsersApiController extends Controller
         {        
             DB::table('users')->insert(
                 [
-                    'name' =>$name,
+                    'name' => $name,
                     'password' => $pw,
                     'email' => $email,
-                    'gender'=>$gender,
-                    'date_of_birth'=>$dob,
-                    'profile_img'=>$img,
-                     'created_at'=> now(),
-                     'role'=>'user',
+                    'gender' => $gender,
+                    'date_of_birth' => $dob,
+                    'profile_img' => $img,
+                     'created_at' => now(),
+                     'role' => 'user',
                 ]
             );
+            $user = DB::table('users')->get()->last();
+            //$user->notify(new WelcomeMail($message));
+            $message=[
+                'greeting'=>'Hello!',
+                'body'=>'Welcome to Our Site!'
+            ];
+            // Notification::send($user , new WelcomeMail($message));
+            $user->notify(new WelcomeMail($message));
+
             return response()->json([
                 'message' => 'Your Register is Success , please verify your email.'
             ],201);
             
-             $user = DB::table('users')->get()->last();
-             $user->notify(new WelcomeMail($message));
+            
+             
             
         }
 
@@ -154,17 +164,18 @@ class UsersApiController extends Controller
                 
                 // if(Hash::check($userpassword, $oldpassword))
                 // if($oldpassword == $userpassword)
+                // if($oldpassword !== $userpassword)
                 //////////////////////////////
                     // $user = DB::table('users')->where('id', $id)->first();
-                    //   var_dump($user);
+                    // var_dump($user->password);
                     // if($user && password_verify($userpassword, $user->password)) 
-                if($oldpassword !== $userpassword)
+                    if($oldpassword !== $userpassword)
                 {   
                   
                     if($npw === $cnpw)
                     {
-                        // $newpassword = Hash::make($npw);
-                        $newpassword = $npw;
+                        $newpassword = Hash::make($npw);
+                        // $newpassword = $npw;
                         //= crypt::encrypt($npw);
                         DB::table('users') 
                                 ->where('id', $id)
@@ -205,5 +216,84 @@ class UsersApiController extends Controller
      */
     public function destroy($id)
     {
+    }
+
+    public function attend_session($request, $id)
+    {
+        dd($request);
+    }
+
+    /**
+     * Create a new AuthController instance.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login','store']]);
+    }
+
+    /**
+     * Get a JWT via given credentials.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if ($token = JWTAuth::attempt($credentials)) {
+            return $this->respondWithToken($token);
+        }
+
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    /**
+     * Get the authenticated User.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function me()
+    {
+        return response()->json(auth()->user());
+    }
+
+    /**
+     * Log the user out (Invalidate the token).
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        auth()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    /**
+     * Refresh a token.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh()
+    {
+        return $this->respondWithToken(auth()->refresh());
+    }
+
+    /**
+     * Get the token array structure.
+     *
+     * @param string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+        // dd($token);
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
+        ]);
     }
 }

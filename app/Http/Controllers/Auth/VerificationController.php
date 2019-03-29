@@ -29,6 +29,11 @@ class VerificationController extends Controller
 
     /**
      * Create a new controller instance.
+<<<<<<< HEAD
+=======
+     *
+     * @return void
+>>>>>>> e08178c4ba148df79a043e80263c8637b7af7e14
      */
     public function __construct()
     {

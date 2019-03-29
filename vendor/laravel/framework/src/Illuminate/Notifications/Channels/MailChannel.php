@@ -9,6 +9,7 @@ use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use  Illuminate\Notifications\RoutesNotifications;
 
 class MailChannel
 {

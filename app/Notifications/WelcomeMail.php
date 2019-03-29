@@ -7,18 +7,18 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class WelcomeMail extends Notification
+class WelcomeMail extends Notification implements ShouldQueue
 {
     use Queueable;
-
+    protected $message;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($message)
     {
-        //
+        $this->message = $message;
     }
 
     /**
@@ -42,9 +42,10 @@ class WelcomeMail extends Notification
     {
         
         return (new MailMessage)
-            ->greeting('Hello!')
-            ->line('Welcome to Our Site!')
-            ->line('Thank you for using our application!');
+            ->greeting($this->message['greeting'])
+            ->line($this->message['body']);
+            
+            
     }
 
     /**
