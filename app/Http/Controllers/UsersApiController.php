@@ -213,6 +213,12 @@ class UsersApiController extends Controller
         }
     }
 
+    public function get_remaining(request $request)
+    {
+        dd($request->input('email'));
+        // return DB::table('users')->where('email', $request->input('email'))->get('Remaning_session');
+    }
+
     /**
      * Create a new AuthController instance.
      */

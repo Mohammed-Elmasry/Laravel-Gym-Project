@@ -13,6 +13,7 @@
 */
 
 Route::post('/sessions/attend', 'UsersApiController@attend_session');
+Route::get('/sessions/remaining', 'UsersApiController@get_remaining');
 Auth::routes(['verify' => true]);
 
 Route::group([
