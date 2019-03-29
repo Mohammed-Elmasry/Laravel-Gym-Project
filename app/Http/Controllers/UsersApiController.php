@@ -62,7 +62,6 @@ class UsersApiController extends Controller
                 'profile_img' => ['required'],
             ]
         );
-        //,'mimes:jpeg,jpg'
         if ($validator->fails()) {
                 return response()->json(['errors' => $validator->errors()], 400);
             } else {
@@ -78,15 +77,6 @@ class UsersApiController extends Controller
                         'role' => 'user',
                     ]
                 );
-                $user = DB::table('users')->get()->last();
-                //$user->notify(new WelcomeMail($message));
-                $message = [
-                    'greeting' => 'Hello!',
-                    'body' => 'Welcome to Our Site!'
-                ];
-                // Notification::send($user , new WelcomeMail($message));
-                // $user->notify(new WelcomeMail($message));
-
                 return response()->json([
                     'message' => 'Your Register is Success , please verify your email.'
                 ], 201);
@@ -116,78 +106,57 @@ class UsersApiController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $pw = Hash::make($request->input('password'));
-        $dbpw = DB::table('users')->where('id', $id)->get('password');
-        dd($dbpw, $pw);
-
+    {        
         $name = $request->input('name');
-        $pw = $request->input('password');
-        $npw = $request->input('new_password');
-        $cnpw = $request->input('conf_new_password');
+        $password = $request->input('password');
+        $newpassword = $request->input('new_password');
+        $confnewpassword = $request->input('conf_new_password');
         $gender = $request->input('gender');
         $dob = $request->input('date_of_birth');
         $img = $request->input('profile_img');
 
+        $validator = Validator::make($request->all(), 
+        [
+            'password' => ['min:6'],
+            'date_of_birth'=>['date'],
+          
+        ]);
 
-        // $validator = Validator::make($request->all(), 
-        // [
-        //     'password' => ['min:6'],
-        //     'date_of_birth'=>['date'],
-        //    // 'profile_img'=>['mimes:jpeg,jpg'],
-        // ]);
+        if ( $validator->fails() ) 
+        {
+            return response()->json( [ 'errors' => $validator->errors() ], 400 );
+        }   
+        else
+        {       
+            if ($password !== $newpassword) {
 
-        // if ( $validator->fails() ) 
-        // {
-        //     return response()->json( [ 'errors' => $validator->errors() ], 400 );
-        // }   
-        // else
-        // {       
-        $userpassword = Hash::make($pw);
-        // $userpassword = crypt::encrypt($pw);
-        $oldpassword = DB::table('users')->where('id', $id)->get('password');
-        // $oldpassword = crypt::decrypt($beforeoldpassword);
-
-        // if($oldpassword === $userpassword)
-
-        // if(Hash::check($userpassword, $oldpassword))
-        // if($oldpassword == $userpassword)
-        // if($oldpassword !== $userpassword)
-        //////////////////////////////
-        // $user = DB::table('users')->where('id', $id)->first();
-        // var_dump($user->password);
-        // if($user && password_verify($userpassword, $user->password)) 
-        if ($oldpassword !== $userpassword) {
-
-                if ($npw === $cnpw) {
-                        $newpassword = Hash::make($npw);
-                        // $newpassword = $npw;
-                        //= crypt::encrypt($npw);
-                        DB::table('users')
-                            ->where('id', $id)
-                            ->update([
-                                'name' => $name,
-                                'password' => $newpassword,
-                                'gender' => $gender,
-                                'date_of_birth' => $dob,
-                                'profile_img' => $img,
-                                'updated_at' => now(),
-                            ]);
-                        return response()->json([
-                            'message' => 'Your Data Updated Successfully  .'
-                        ], 200);
-                    } else {
-                        return response()->json([
-                            'message' => 'Password Does not Match With Confirm Password '
-                        ], 401);
-                    }
-            } else {
-            return response()->json([
-                'message' => ' Your Password do not  match'
-            ], 400);
-        }
+                    if ($newpassword === $confnewpassword) {
+                            $npw = Hash::make($newpassword);
+                            DB::table('users')
+                                ->where('id', $id)
+                                ->update([
+                                    'name' => $name,
+                                    'password' => $npw,
+                                    'gender' => $gender,
+                                    'date_of_birth' => $dob,
+                                    'profile_img' => $img,
+                                    'updated_at' => now(),
+                                ]);
+                            return response()->json([
+                                'message' => 'Your Data Updated Successfully  .'
+                            ], 200);
+                        } else {
+                            return response()->json([
+                                'message' => 'Password Does not Match With Confirm Password '
+                            ], 401);
+                        }
+                } else {
+                return response()->json([
+                    'message' => ' Your Password do not  match'
+                ], 400);
+            }
     }
-
+}
     /**
      * Remove the specified resource from storage.
      *
